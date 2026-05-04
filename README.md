@@ -62,7 +62,3 @@ go test -race -count=1 ./testproject/tests/...
 ## Graceful shutdown
 
 `SIGINT` / `SIGTERM` → `Shutdown` с дедлайном, `BaseContext` рвёт долгие **GET** при остановке.
-
-## Лицензия / автор
-
-Тестовое задание; при форке — укажи автора.
