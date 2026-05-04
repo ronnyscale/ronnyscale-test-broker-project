@@ -10,13 +10,14 @@ GET  /{queue}?timeout=N   → ждать до N секунд, иначе 404
 
 ## Быстрый старт
 
-Из корня репозитория (где лежит `go.mod`):
+`go.mod` лежит в **корне репозитория** (на уровень выше этой папки). Откуда запускаешь — такой и путь:
 
-```bash
-go run ./testproject 8080
-```
+| Где ты сейчас | Запуск |
+|---------------|--------|
+| корень репо (`…/developing/`) | `go run ./testproject 8080` |
+| эта папка (`…/developing/testproject/`) | `go run . 8080` |
 
-Очередь по умолчанию пишется в **`queue.db`** в текущей директории процесса.
+Очередь по умолчанию пишется в **`queue.db`** в **текущей рабочей директории** процесса (откуда вызвал `go run`).
 
 ## Архитектура (коротко)
 
@@ -41,7 +42,11 @@ flowchart LR
 ## Тесты
 
 ```bash
+# из корня репозитория (рядом с go.mod)
 go test -race -count=1 ./testproject/tests/...
+
+# из папки testproject/ (как у тебя в терминале) — без префикса testproject/
+go test -race -count=1 ./tests/...
 ```
 
 - **`tests/integration`** — HTTP end-to-end (сценарий из ТЗ, два ждуна, конкурентные PUT, негативы).
@@ -62,3 +67,4 @@ go test -race -count=1 ./testproject/tests/...
 ## Graceful shutdown
 
 `SIGINT` / `SIGTERM` → `Shutdown` с дедлайном, `BaseContext` рвёт долгие **GET** при остановке.
+
